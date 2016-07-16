@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Next Word Prediction</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Next Word Prediction">
+  <meta name="author" content="Tread Rightly">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Next Word Prediction</h1>
+    <h2>Capstone Project</h2>
+    <p>Tread Rightly<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Next Word Prediction</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><p>Problem Statement: Using a corpus of text, learn typical phrases and use this knowledge to predict the next word, given an input string</p></li>
+<li><p>Solution</p>
+
+<ul>
+<li>Learn most common unigrams, bigrams and trigrams and save as model</li>
+<li>Implement a web application that uses the above model to predict the next word in an easy, intuitive manner</li>
+</ul></li>
+<li><p>The algorithm is split into two parts:</p>
+
+<ul>
+<li>Training</li>
+<li>Prediction</li>
+</ul></li>
+<li><p>Training involves cleaning and processing text files and learning ngrams</p></li>
+<li><p>Prediction involves using the learned ngrams to predict the next word</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Training</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Training consists of the following steps:
+
+<ol>
+<li>Download and unzip the training dataset from:
+
+<ul>
+<li><a href="https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip">https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip</a></li>
+</ul></li>
+<li>Load the corpus in memory using &#39;tm&#39;</li>
+<li>Break up the corpora into 50 pieces for processing</li>
+<li>Clean the corpora by converting all letters to lower case, removing non-alphanumeric characters, whitespace, number, punctuation, extra whitespace</li>
+<li>Remove profanity using as reference the following url: 
+
+<ul>
+<li><a href="http://www.bannedwordlist.com/lists/swearWords.txt">http://www.bannedwordlist.com/lists/swearWords.txt</a></li>
+</ul></li>
+<li>Each piece of the cleaned corpora is now converted into a DocumentTermMatrix, tokenizing for unigrams, bigrams and trigrams</li>
+<li>All DocumentTermMatrix objects are combined and sparse terms are then dropped</li>
+<li>N-Gram counts are computed from the DocumentTermMatrix objects, sorted in decreasing order of counts and saved as models</li>
+</ol></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Prediction</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Using the learned N-Gram counts, the next word is predicted as follows:
+
+<ol>
+<li>The input is cleaned in the same manner as training</li>
+<li>If the number of input words are greater than 2, the last two words are searched in the tri-gram counts. If a match is found, the last word in the top most match is returned as the prediction</li>
+<li>If the number of input words is equal to 2, or no match is found in step #2, the last word is searched in the bi-gram counts. If a match is found, the last word in the top most match is returned as the prediction</li>
+<li>If no match is found in #3, or length of input is zero, then the most common word in the uni-gram counts is returned as the prediction</li>
+</ol></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Web Application</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The algorithm described in the previous slides is hosted at the following location:
+
+<ul>
+<li><a href="https://treadrightly.shinyapps.io/treadrightly_predict_word/">https://treadrightly.shinyapps.io/treadrightly_predict_word/</a></li>
+<li>To use the application, simply start typing in phrases. As you pause typing, the next predicted word will appear to the right of the input text box</li>
+</ul></li>
+<li>The source code for the web application is hosted here:
+
+<ul>
+<li><a href="https://github.com/treadrightly/capstone/tree/master/treadrightly_predict_word">https://github.com/treadrightly/capstone/tree/master/treadrightly_predict_word</a></li>
+</ul></li>
+<li>The source code for the training module is hosted here:
+
+<ul>
+<li><a href="https://github.com/treadrightly/capstone/tree/master/training">https://github.com/treadrightly/capstone/tree/master/training</a></li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Next Word Prediction'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Training'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Prediction'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Web Application'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
